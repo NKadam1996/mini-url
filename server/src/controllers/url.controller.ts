@@ -22,7 +22,13 @@ export const shortenUrl = (req: Request, res: Response) => {
 export const redirectUrl = (req: Request<RedirectParams>, res: Response) => {
   const { code } = req.params;
 
+  // Base62 validation
+  if (!/^[A-Za-z0-9]+$/.test(code)) {
+    return res.status(404).json({ error: "Invalid shortcode" });
+  }
+
   const originalUrl = getOriginalUrl(code);
+  console.log(originalUrl);
 
   if (!originalUrl) {
     return res.status(404).json({ error: "URL not found" });
