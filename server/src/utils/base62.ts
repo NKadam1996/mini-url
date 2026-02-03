@@ -4,7 +4,7 @@ export const generateShortCode = (length = 6): string => {
   let result = "";
 
   for (let i = 0; i < length; i++) {
-    result += chars.charAt(Math.floor(Math.random() * chars.length));
+    result += chars[Math.floor(Math.random() * 62)];
   }
   return result;
 };
