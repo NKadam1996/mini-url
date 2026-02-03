@@ -1,0 +1,13 @@
+services:
+  server:
+    container_name: mini_url_server
+    build:
+      context: ./server
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./server/.env
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    command: npm run dev
