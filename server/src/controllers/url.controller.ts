@@ -1,22 +1,26 @@
 import { Request, Response } from "express";
 import { createShortUrl, getOriginalUrl } from "../services/url.service";
+import { isValidUrl } from "../utils/validateUrl";
 
 interface RedirectParams {
   code: string;
 }
 
-export const shortenUrl = (req: Request, res: Response) => {
+export const shortenUrl = async (req: Request, res: Response) => {
   const { url } = req.body;
 
-  if (!url || typeof url !== "string") {
+  if (!url || !isValidUrl(url)) {
     return res.status(400).json({ error: "Invalid URL" });
   }
+  try {
+    const shortCode = await createShortUrl(url);
 
-  const shortCode = createShortUrl(url);
-
-  res.status(201).json({
-    shortUrl: `http://localhost:3000/${shortCode}`,
-  });
+    res.status(201).json({
+      shortUrl: `${req.protocol}://${req.get("host")}/${shortCode}`,
+    });
+  } catch (error) {
+    return res.status(500).json({ error: "Failed to shorten URL" });
+  }
 };
 
 export const redirectUrl = (req: Request<RedirectParams>, res: Response) => {
