@@ -4,7 +4,7 @@ import app from "../app";
 describe("URL Shortener", () => {
   it("shortens a URL", async () => {
     const res = await request(app)
-      .post("/api/shorten")
+      .post("/shorten")
       .send({ url: "https://example.com" });
 
     expect(res.status).toBe(201);
@@ -13,7 +13,7 @@ describe("URL Shortener", () => {
 
   it("redirects to original URL", async () => {
     const shortenRes = await request(app)
-      .post("/api/shorten")
+      .post("/shorten")
       .send({ url: "https://example.com" });
 
     const shortUrl = shortenRes.body.shortUrl;

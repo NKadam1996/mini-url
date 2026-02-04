@@ -14,4 +14,4 @@ COPY . .
 EXPOSE 3000
 
 # Dev command (hot reload)
-CMD ["node", "src/server.js"]
+CMD ["npm","run","dev"]

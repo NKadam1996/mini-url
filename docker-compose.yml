@@ -1,13 +1,28 @@
 services:
-  server:
-    container_name: mini_url_server
-    build:
+  api:
+    build: 
       context: ./server
+      dockerfile: Dockerfile
     ports:
       - "3000:3000"
+    depends_on:
+      - mongo
+      - redis
     env_file:
-      - ./server/.env
+      - ./server/src/.env
+
+  mongo:
+    image: mongo:7
+    ports:
+      - "27017:27017"
     volumes:
-      - ./server:/app
-      - /app/node_modules
-    command: npm run dev
+      - mongo_data:/data/db
+
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+    command: redis-server --save 60 1 --loglevel warning
+
+volumes:
+  mongo_data:

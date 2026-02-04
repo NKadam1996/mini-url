@@ -6,11 +6,10 @@ import morgan from "morgan";
 import routes from "./routes";
 import { notFoundHandler } from "./middlewares/notFound.middleware";
 import { errorHandler } from "./middlewares/error.middleware";
-import { redirectUrl } from "./controllers/url.controller";
 
 const app = express();
 
-app.use(helmet);
+app.use(helmet());
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -19,12 +18,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
 // Routes
-app.use("/api", routes);
+app.use("/", routes);
 
 // Error handling
 app.use(notFoundHandler);
 app.use(errorHandler);
-
-app.get("/:code", redirectUrl);
 
 export default app;

@@ -23,7 +23,7 @@ export const shortenUrl = async (req: Request, res: Response) => {
   }
 };
 
-export const redirectUrl = (req: Request<RedirectParams>, res: Response) => {
+export const redirectUrl = async (req: Request<RedirectParams>, res: Response) => {
   const { code } = req.params;
 
   // Base62 validation
@@ -31,12 +31,12 @@ export const redirectUrl = (req: Request<RedirectParams>, res: Response) => {
     return res.status(404).json({ error: "Invalid shortcode" });
   }
 
-  const originalUrl = getOriginalUrl(code);
+  const originalUrl = await getOriginalUrl(code);
   console.log(originalUrl);
 
   if (!originalUrl) {
     return res.status(404).json({ error: "URL not found" });
   }
 
-  res.redirect(originalUrl);
+  res.redirect(302, originalUrl);
 };
