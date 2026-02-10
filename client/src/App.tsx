@@ -24,6 +24,11 @@ function App() {
     }
   };
 
+  const copyToClipboard = async () => {
+    await navigator.clipboard.writeText(shortUrl);
+    alert("Copied to clipboard!");
+  };
+
   return (
     <div style={{ maxWidth: 500, margin: "4rem auto", textAlign: "center" }}>
       <h1>Mini</h1>
@@ -42,11 +47,22 @@ function App() {
       {error && <p style={{ color: "red" }}>{error}</p>}
 
       {shortUrl && (
-        <div>
+        <div style={{ marginTop: "1rem" }}>
           <p>Short URL:</p>
-          <a href={shortUrl} target="_blank">
-            {shortUrl}
-          </a>
+          <div
+            style={{ display: "flex", gap: "0.5rem", justifyContent: "center" }}
+          >
+            <input
+              value={shortUrl}
+              type="text"
+              placeholder="https://example.com"
+              readOnly
+              style={{ width: "70%", padding: "0.5rem" }}
+              onClick={(e) => e.currentTarget.select()}
+              onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+            />
+            <button onClick={copyToClipboard}>Copy</button>
+          </div>
         </div>
       )}
     </div>
