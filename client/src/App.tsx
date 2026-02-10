@@ -6,6 +6,7 @@ function App() {
   const [shortUrl, setShortUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [copied, setCopied] = useState(false);
 
   const handleSubmit = async () => {
     if (!url) return;
@@ -26,12 +27,23 @@ function App() {
 
   const copyToClipboard = async () => {
     await navigator.clipboard.writeText(shortUrl);
-    alert("Copied to clipboard!");
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   return (
-    <div style={{ maxWidth: 500, margin: "4rem auto", textAlign: "center" }}>
-      <h1>Mini</h1>
+    <div
+      style={{
+        maxWidth: 500,
+        margin: "5rem auto",
+        padding: "2rem",
+        borderRadius: "8px",
+        border: "1px solid #ddd",
+        textAlign: "center",
+        fontFamily: "system-ui, sans-serif",
+      }}
+    >
+      <h1 style={{ marginBottom: "1.5rem" }}>Mini URL</h1>
       <input
         type="text"
         placeholder="https://example.com"
@@ -40,7 +52,11 @@ function App() {
         style={{ width: "100%", padding: "0.5rem" }}
       />
 
-      <button onClick={handleSubmit} disabled={loading}>
+      <button
+        onClick={handleSubmit}
+        disabled={loading || !url}
+        style={{ marginTop: "1rem" }}
+      >
         {loading ? "Shortening..." : "Shorten"}
       </button>
 
@@ -65,6 +81,7 @@ function App() {
           </div>
         </div>
       )}
+      {copied && <p style={{ color: "green" }}>Copied!</p>}
     </div>
   );
 }

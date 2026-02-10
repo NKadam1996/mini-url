@@ -7,9 +7,13 @@ export async function shortenUrl(url: string) {
     body: JSON.stringify({ url }),
   });
 
+  const data = await res.json();
+
   if (!res.ok) {
-    const err = await res.json();
-    throw new Error(err.error || "Failed to shorten URL");
+    if (res.status === 429) {
+      throw new Error("Too many requests. Please try again later.");
+    }
+    throw new Error(data.error || "Failed to shorten URL");
   }
-  return res.json();
+  return data;
 }
