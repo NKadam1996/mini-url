@@ -32,56 +32,49 @@ function App() {
   };
 
   return (
-    <div
-      style={{
-        maxWidth: 500,
-        margin: "5rem auto",
-        padding: "2rem",
-        borderRadius: "8px",
-        border: "1px solid #ddd",
-        textAlign: "center",
-        fontFamily: "system-ui, sans-serif",
-      }}
-    >
-      <h1 style={{ marginBottom: "1.5rem" }}>Mini URL</h1>
-      <input
-        type="text"
-        placeholder="https://example.com"
-        value={url}
-        onChange={(e) => setUrl(e.target.value)}
-        style={{ width: "100%", padding: "0.5rem" }}
-      />
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+      <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-md text-center">
+        <h1 className="text-2xl font-bold mb-6">Mini URL</h1>
+        <input
+          type="text"
+          placeholder="https://example.com"
+          value={url}
+          onChange={(e) => setUrl(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+          className="w-full border rounded-lg px-3 py-2 mb-4 focus:outline-none focus:ring"
+        />
 
-      <button
-        onClick={handleSubmit}
-        disabled={loading || !url}
-        style={{ marginTop: "1rem" }}
-      >
-        {loading ? "Shortening..." : "Shorten"}
-      </button>
+        <button
+          onClick={handleSubmit}
+          disabled={loading || !url}
+          className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50"
+        >
+          {loading ? "Shortening..." : "Shorten"}
+        </button>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+        {error && <p className="text-red-500 mt-3">{error}</p>}
 
-      {shortUrl && (
-        <div style={{ marginTop: "1rem" }}>
-          <p>Short URL:</p>
-          <div
-            style={{ display: "flex", gap: "0.5rem", justifyContent: "center" }}
-          >
-            <input
-              value={shortUrl}
-              type="text"
-              placeholder="https://example.com"
-              readOnly
-              style={{ width: "70%", padding: "0.5rem" }}
-              onClick={(e) => e.currentTarget.select()}
-              onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
-            />
-            <button onClick={copyToClipboard}>Copy</button>
+        {shortUrl && (
+          <div className="mt-4">
+            <p className="text-sm text-gray-600 mb-1">Short URL:</p>
+            <div className="flex gap-2">
+              <input
+                value={shortUrl}
+                readOnly
+                onClick={(e) => e.currentTarget.select()}
+                className="flex-1 border rounded-lg px-2 py-1"
+              />
+              <button
+                onClick={copyToClipboard}
+                className="bg-gray-200 px-3 rounded-lg hover:bg-gray-300"
+              >
+                Copy
+              </button>
+            </div>
           </div>
-        </div>
-      )}
-      {copied && <p style={{ color: "green" }}>Copied!</p>}
+        )}
+        {copied && <p className="text-green-600 text-sm mt-2">Copied!</p>}
+      </div>
     </div>
   );
 }
