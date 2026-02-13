@@ -32,8 +32,8 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-md text-center">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-100 via-gray-100 to-slate-200">
+      <div className="bg-white/90 backdrop-blur p-8 rounded-2xl shadow-xl w-full max-w-md text-center border border-gray-200">
         <h1 className="text-2xl font-bold mb-6">Mini URL</h1>
         <input
           type="text"
