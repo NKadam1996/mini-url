@@ -31,7 +31,10 @@ function App() {
   };
 
   const handleSubmit = async () => {
-    if (!url) return;
+    if (!isValidUrl(url)) {
+      setError("Please enter a valid URL (include https://)");
+      return;
+    }
 
     setLoading(true);
     setError("");
@@ -41,7 +44,7 @@ function App() {
       const data = await shortenUrl(url);
       setShortUrl(`${window.location.origin}/${data.shortCode}`);
     } catch (err: any) {
-      setError(err.message);
+      setError(err.message || "Something went wrong");
     } finally {
       setLoading(false);
     }
@@ -63,8 +66,8 @@ function App() {
         {darkMode ? "☀ Light" : "🌙 Dark"}
       </button>
 
-      <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur p-8 rounded-2xl shadow-xl w-full max-w-md text-center border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100 transition-colors duration-500">
-        <h1 className="text-2xl font-bold mb-6">Mini URL</h1>
+      <div className="bg-white dark:bg-gray-900 dark:text-white backdrop-blur p-6 sm:p-8 rounded-2xl shadow-xl w-full max-w-md text-center border border-gray-200 dark:border-gray-700 transition-all duration-300">
+        <h1 className="text-3xl font-extrabold mb-6 tracking-tight">Mini URL</h1>
         <input
           type="text"
           placeholder="https://example.com"
@@ -85,35 +88,48 @@ function App() {
         <button
           onClick={handleSubmit}
           disabled={loading || !url}
-          className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50"
+          className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-2"
         >
-          {loading ? "Shortening..." : "Shorten"}
+          {loading ? (
+            <>
+              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              Shortening...
+            </>
+          ) : (
+            "Shorten"
+          )}
         </button>
 
         {error && <p className="text-red-500 mt-3 text-sm">{error}</p>}
 
         {shortUrl && (
-          <div className="mt-4">
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
+          <div className="mt-6 text-left">
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
               Short URL:
             </p>
-            <div className="flex gap-2">
+            <div className="flex gap-2 sm:flex-row gap-2">
               <input
                 value={shortUrl}
                 readOnly
                 onClick={(e) => e.currentTarget.select()}
-                className="flex-1 border rounded-lg px-2 py-1"
+                className="flex-1 border rounded-lg px-2 py-2 text-sm dark:bg-gray-800 dark:border-gray-700"
               />
               <button
                 onClick={copyToClipboard}
                 className="bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100px-3 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition"
               >
-                Copy
+                {copied ? (
+                  <span className="text-green-500 animate-bounce">✔</span>
+                ) : (
+                  "Copy"
+                )}
               </button>
             </div>
           </div>
         )}
-        {copied && <p className="text-green-600 text-sm mt-2">Copied!</p>}
+        {copied && (
+          <p className="text-green-600 text-sm mt-2 animate-pulse">Copied!</p>
+        )}
       </div>
     </div>
   );
