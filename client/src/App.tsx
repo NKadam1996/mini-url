@@ -21,6 +21,15 @@ function App() {
     }
   }, [darkMode]);
 
+  const isValidUrl = (value: string) => {
+    try {
+      new URL(value);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
   const handleSubmit = async () => {
     if (!url) return;
 
@@ -62,8 +71,16 @@ function App() {
           value={url}
           onChange={(e) => setUrl(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
-          className="w-full border rounded-lg px-3 py-2 mb-4 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring"
+          className={`w-full border rounded-lg px-3 py-2 mb-2 focus:outline-none focus:ring-2 transition
+            ${
+              url && !isValidUrl(url)
+                ? "border-red-500 focus:ring-red-500"
+                : "focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700"
+            }`}
         />
+        {url && !isValidUrl(url) && (
+          <p className="text-red-500 text-sm mb-3">Invalid URL format</p>
+        )}
 
         <button
           onClick={handleSubmit}
@@ -73,11 +90,13 @@ function App() {
           {loading ? "Shortening..." : "Shorten"}
         </button>
 
-        {error && <p className="text-red-500 mt-3">{error}</p>}
+        {error && <p className="text-red-500 mt-3 text-sm">{error}</p>}
 
         {shortUrl && (
           <div className="mt-4">
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Short URL:</p>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
+              Short URL:
+            </p>
             <div className="flex gap-2">
               <input
                 value={shortUrl}
