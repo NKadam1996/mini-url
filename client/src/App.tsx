@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { shortenUrl } from "./lib/api";
 
 function App() {
@@ -7,6 +7,19 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [copied, setCopied] = useState(false);
+  const [darkMode, setDarkMode] = useState(
+    localStorage.getItem("theme") === "dark",
+  );
+
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    }
+  }, [darkMode]);
 
   const handleSubmit = async () => {
     if (!url) return;
@@ -32,8 +45,16 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-100 via-gray-100 to-slate-200">
-      <div className="bg-white/90 backdrop-blur p-8 rounded-2xl shadow-xl w-full max-w-md text-center border border-gray-200">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-100 via-gray-100 to-slate-200 dark:from-slate-900 dark:via-gray-900 dark:to-slate-800 transition-colors duration-500">
+      {/* Dark Mode Toggle */}
+      <button
+        onClick={() => setDarkMode(!darkMode)}
+        className="absolute top-5 right-5 text-sm px-3 py-1 rounded-full bg-gray-200 dark:bg-gray-700 dark:text-white transition"
+      >
+        {darkMode ? "☀ Light" : "🌙 Dark"}
+      </button>
+
+      <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur p-8 rounded-2xl shadow-xl w-full max-w-md text-center border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100 transition-colors duration-500">
         <h1 className="text-2xl font-bold mb-6">Mini URL</h1>
         <input
           type="text"
@@ -41,7 +62,7 @@ function App() {
           value={url}
           onChange={(e) => setUrl(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
-          className="w-full border rounded-lg px-3 py-2 mb-4 focus:outline-none focus:ring"
+          className="w-full border rounded-lg px-3 py-2 mb-4 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring"
         />
 
         <button
@@ -56,7 +77,7 @@ function App() {
 
         {shortUrl && (
           <div className="mt-4">
-            <p className="text-sm text-gray-600 mb-1">Short URL:</p>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Short URL:</p>
             <div className="flex gap-2">
               <input
                 value={shortUrl}
@@ -66,7 +87,7 @@ function App() {
               />
               <button
                 onClick={copyToClipboard}
-                className="bg-gray-200 px-3 rounded-lg hover:bg-gray-300"
+                className="bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100px-3 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition"
               >
                 Copy
               </button>
