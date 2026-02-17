@@ -42,7 +42,8 @@ function App() {
 
     try {
       const data = await shortenUrl(url);
-      setShortUrl(`${window.location.origin}/${data.shortCode}`);
+      console.log("Shortened URL data:", data);
+      setShortUrl(`${data.shortUrl}`);
     } catch (err: any) {
       setError(err.message || "Something went wrong");
     } finally {

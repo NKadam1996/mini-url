@@ -6,11 +6,17 @@ import morgan from "morgan";
 import routes from "./routes";
 import { notFoundHandler } from "./middlewares/notFound.middleware";
 import { errorHandler } from "./middlewares/error.middleware";
+import { redirectUrl } from "./controllers/url.controller";
 
 const app = express();
 
 app.use(helmet());
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL,
+    credentials: true,
+  }),
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -18,7 +24,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
 // Routes
-app.use("/", routes);
+app.use("/api", routes);
+app.get("/:code", redirectUrl);
 
 // Error handling
 app.use(notFoundHandler);
