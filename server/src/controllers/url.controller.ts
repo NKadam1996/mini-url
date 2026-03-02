@@ -16,7 +16,7 @@ export const shortenUrl = async (req: Request, res: Response) => {
     const shortCode = await createShortUrl(url);
 
     res.status(201).json({
-      shortUrl: `${req.protocol}://${req.get("host")}/${shortCode}`,
+      shortUrl: shortCode,
     });
   } catch (error) {
     return res.status(500).json({ error: "Failed to shorten URL" });
