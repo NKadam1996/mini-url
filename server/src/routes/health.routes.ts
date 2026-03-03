@@ -3,7 +3,7 @@ import redis from "../config/redis";
 
 const router = Router();
 
-router.get("/health", (_req, res) => {
+router.get("/", (_req, res) => {
   res.status(200).json({ status: "ok", uptime: process.uptime() });
 
   redis.on("connect", () => {
