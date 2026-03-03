@@ -29,7 +29,7 @@ app.use("/api", routes);
 app.get("/:code", redirectUrl);
 
 // Code to serve React frontend
-const clientPath = path.join(__dirname, "../../../client/dist");
+const clientPath = path.join(__dirname, "../public");
 
 app.use(express.static(clientPath));
 
