@@ -1,4 +1,5 @@
 import express from "express";
+import path from "path";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
@@ -26,6 +27,15 @@ app.use(morgan("dev"));
 // Routes
 app.use("/api", routes);
 app.get("/:code", redirectUrl);
+
+// Code to serve React frontend
+const clientPath = path.join(__dirname, "../../../client/dist");
+
+app.use(express.static(clientPath));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(clientPath, "index.html"));
+});
 
 // Error handling
 app.use(notFoundHandler);
