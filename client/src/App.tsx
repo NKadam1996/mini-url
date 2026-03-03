@@ -44,13 +44,14 @@ function App() {
       const data = await shortenUrl(url);
       console.log("Shortened URL data:", data);
       setShortUrl(`${window.location.origin}/${data.shortUrl}`);
-      //setShortUrl(`${data.shortUrl}`);
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message);
       } else {
         setError("Something went wrong");
       }
+    } finally {
+      setLoading(false);
     }
   };
 
