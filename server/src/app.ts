@@ -24,14 +24,14 @@ app.use(express.urlencoded({ extended: true }));
 // Logging
 app.use(morgan("dev"));
 
-// Routes
-app.use("/api", routes);
-app.get("/:code", redirectUrl);
-
 // Code to serve React frontend
 const clientPath = path.join(__dirname, "../public");
 
 app.use(express.static(clientPath));
+
+// Routes
+app.use("/api", routes);
+app.get("/:code", redirectUrl);
 
 app.use((req, res) => {
   res.sendFile(path.join(clientPath, "index.html"));
