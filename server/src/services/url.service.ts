@@ -2,7 +2,7 @@ import { readdirSync } from "node:fs";
 import { UrlModel } from "../models/url.model";
 import { findByShortCode } from "../repositories/url.repository";
 import { generateShortCode } from "../utils/base62";
-import { redis } from "../config/redis";
+import redis from "../config/redis";
 
 const urlStore = new Map<string, string>();
 

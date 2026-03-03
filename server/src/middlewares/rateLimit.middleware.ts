@@ -1,5 +1,5 @@
 // src/middleware/rateLimit.middleware.ts
-import { redis } from "../config/redis";
+import redis from "../config/redis";
 import { Request, Response, NextFunction } from "express";
 
 const DEFAULT_LIMIT = 10;

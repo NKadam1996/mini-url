@@ -45,10 +45,12 @@ function App() {
       console.log("Shortened URL data:", data);
       setShortUrl(`${window.location.origin}/${data.code}`);
       //setShortUrl(`${data.shortUrl}`);
-    } catch (err: any) {
-      setError(err.message || "Something went wrong");
-    } finally {
-      setLoading(false);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Something went wrong");
+      }
     }
   };
 
@@ -69,7 +71,9 @@ function App() {
       </button>
 
       <div className="bg-white dark:bg-gray-900 dark:text-white backdrop-blur p-6 sm:p-8 rounded-2xl shadow-xl w-full max-w-md text-center border border-gray-200 dark:border-gray-700 transition-all duration-300">
-        <h1 className="text-3xl font-extrabold mb-6 tracking-tight">Mini URL</h1>
+        <h1 className="text-3xl font-extrabold mb-6 tracking-tight">
+          Mini URL
+        </h1>
         <input
           type="text"
           placeholder="https://example.com"
